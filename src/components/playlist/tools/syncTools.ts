@@ -108,7 +108,7 @@ export async function joinAllSyncGroupsOnSmilStart(
 
 export async function connectSyncSafe(sos: FrontApplet, retryCount: number = 3) {
 	try {
-		await sos.sync.connect({ engine: SyncEngine.P2PLocal });
+		await sos.sync.connect({ engine: SyncEngine.SyncServer });
 		resetAppRestartCount();
 	} catch (error) {
 		debug('Error occurred during sync connection: %O', error);
@@ -118,7 +118,7 @@ export async function connectSyncSafe(sos: FrontApplet, retryCount: number = 3) 
 			await connectSyncSafe(sos, retryCount - 1);
 		} else {
 			// restart app only on Samsung devices
-			if ((await sos.management.getBrand()).toLowerCase().indexOf('samsung') > -1) {
+			if ((await sos.management.getBrand()).toLowerCase().indexOf('lg') > -1) {
 				await limitedAppRestart(sos);
 			}
 			throw error;
